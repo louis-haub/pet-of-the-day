@@ -1,5 +1,9 @@
+mod headers;
+mod config;
+
 #[macro_use] extern crate rocket;
 
+use crate::config::Config;
 
 #[post("/api/interactions")]
 fn api_interactions() -> &'static str {
@@ -13,5 +17,6 @@ fn index() -> &'static str {
 
 #[rocket::main]
 async fn main() {
-    rocket::build().mount("/", routes![index, api_interactions]).launch().await;
+    let config = Config::create_and_validate();
+    rocket::build().mount("/", routes![index, api_interactions]).launch().await.expect("Failed to launch rocket :(");
 }
