@@ -13,5 +13,5 @@ fn index() -> &'static str {
 
 #[rocket::main]
 async fn main() {
-    rocket::build().mount("/", routes![index]).launch().await;
+    rocket::build().mount("/", routes![index, base]).launch().await;
 }
