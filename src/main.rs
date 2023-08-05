@@ -1,8 +1,8 @@
 #[macro_use] extern crate rocket;
 
 
-#[post("/")]
-fn base() -> &'static str {
+#[post("/api/interactions")]
+fn api_interactions() -> &'static str {
     "{\"type\":1}"
 }
 
@@ -13,5 +13,5 @@ fn index() -> &'static str {
 
 #[rocket::main]
 async fn main() {
-    rocket::build().mount("/", routes![index, base]).launch().await;
+    rocket::build().mount("/", routes![index, api_interactions]).launch().await;
 }
