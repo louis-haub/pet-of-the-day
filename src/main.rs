@@ -23,7 +23,7 @@ fn api_interactions<'a>(message: AuthorizedRequest) -> Result<&'a str, ()> {
             Ok("{
             \"type\": 4,
             \"data\": {
-                \"tts\": False,
+                \"tts\": false,
                 \"content\": \"Congrats on sending your command!\",
                 \"embeds\": [],
                 \"allowed_mentions\": { \"parse\": [] }
