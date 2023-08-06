@@ -2,24 +2,36 @@ mod headers;
 mod config;
 mod authorized_data;
 
-#[macro_use] extern crate rocket;
+#[macro_use]
+extern crate rocket;
 
-use std::str::{from_utf8, Utf8Error};
-use rocket::figment::util::vec_tuple_map::deserialize;
-use serde::Deserialize;
-use serenity::model::prelude::Interaction;
+use std::str::{from_utf8};
+use serenity::model::prelude::{Interaction};
 use crate::authorized_data::AuthorizedRequest;
 use crate::config::Config;
 
-#[post("/api/interactions", format= "application/json", data = "<message>")]
-fn api_interactions(message: AuthorizedRequest) -> Result<&'static str, ()> {
+#[post("/api/interactions", format = "application/json", data = "<message>")]
+fn api_interactions<'a>(message: AuthorizedRequest) -> Result<&'a str, ()> {
     let message_string = match from_utf8(message.data.as_slice()) {
-        Ok(val) => {val}
-        Err(err) => {return Err(())}
+        Ok(val) => { val }
+        Err(err) => { return Err(()); }
     };
     let interaction: Interaction = serde_json::from_str(message_string).unwrap();
-    println!("Interaction: {:?}", interaction);
-    Ok("")
+    return match interaction {
+        Interaction::Ping(_) => { Ok("{\"type\": 1}") }
+        Interaction::ApplicationCommand(_) => {
+            Ok("{
+            \"type\": 4,
+            \"data\": {
+                \"tts\": False,
+                \"content\": \"Congrats on sending your command!\",
+                \"embeds\": [],
+                \"allowed_mentions\": { \"parse\": [] }
+            }
+        }")
+        }
+        _ => Ok("")
+    };
 }
 
 #[get("/")]
