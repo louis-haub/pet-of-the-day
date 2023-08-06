@@ -12,9 +12,15 @@ impl<'a> FromData<'a> for AuthorizedRequest {
     type Error = ();
 
     async fn from_data(req: &'a Request<'_>, data: Data<'a>) -> Outcome<'a, Self> {
+        debug!("new message received, validating");
         match verify(req, data).await {
-            Some(data) => Outcome::Success(AuthorizedRequest { data }),
-            None => Outcome::Failure((rocket::http::Status::Unauthorized, ()))
+            Some(data) => {
+                info!("Valid request received, begin processing");
+                Outcome::Success(AuthorizedRequest { data }) },
+            None => {
+                warn!("Unauthorized request received and blocked! {:#?}", req);
+                Outcome::Failure((rocket::http::Status::Unauthorized, ()) )
+            }
         }
     }
 }

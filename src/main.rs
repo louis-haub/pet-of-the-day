@@ -17,6 +17,9 @@ fn api_interactions<'a>(message: AuthorizedRequest) -> Result<&'a str, ()> {
         Err(err) => { return Err(()); }
     };
     let interaction: Interaction = serde_json::from_str(message_string).unwrap();
+
+    info!("interaction received: {:#?}", interaction);
+
     return match interaction {
         Interaction::Ping(_) => { Ok("{\"type\": 1}") }
         _ => {
