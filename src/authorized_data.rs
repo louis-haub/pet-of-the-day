@@ -4,7 +4,7 @@ use rocket::{Data, Request};
 use crate::config::Config;
 
 pub struct AuthorizedRequest {
-    data: Capped<Vec<u8>>
+    pub data: Capped<Vec<u8>>
 }
 
 #[async_trait]
@@ -13,7 +13,7 @@ impl<'a> FromData<'a> for AuthorizedRequest {
 
     async fn from_data(req: &'a Request<'_>, data: Data<'a>) -> Outcome<'a, Self> {
         match verify(req, data).await {
-            Some(data) => Outcome::Success(AuthorizedRequest { data: data }),
+            Some(data) => Outcome::Success(AuthorizedRequest { data }),
             None => Outcome::Failure((rocket::http::Status::Unauthorized, ()))
         }
     }

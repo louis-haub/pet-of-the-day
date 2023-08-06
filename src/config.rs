@@ -12,10 +12,10 @@ impl Config {
         let cfg = match Config::from_env(env::vars()) {
             Ok(res) => { res }
             Err(error) => {
-                panic!("The following error occured while initialzing Environment: {:#?}", error)
+                panic!("The following error occurred while initializing Environment: {:#?}", error)
             }
         };
-        assert!(cfg.public_key.chars().count() > 0, "PUBLIC_KEY evironment variable is missing. Please set it to the public key of your discor app!");
+        assert!(cfg.public_key.chars().count() > 0, "PUBLIC_KEY environment variable is missing. Please set it to the public key of your discord app!");
 
         cfg
     }
