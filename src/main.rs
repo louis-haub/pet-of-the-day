@@ -19,7 +19,7 @@ fn api_interactions<'a>(message: AuthorizedRequest) -> Result<&'a str, ()> {
     let interaction: Interaction = serde_json::from_str(message_string).unwrap();
     return match interaction {
         Interaction::Ping(_) => { Ok("{\"type\": 1}") }
-        Interaction::ApplicationCommand(_) => {
+        _ => {
             Ok("{
             \"type\": 4,
             \"data\": {
@@ -30,7 +30,6 @@ fn api_interactions<'a>(message: AuthorizedRequest) -> Result<&'a str, ()> {
             }
         }")
         }
-        _ => Ok("")
     };
 }
 
