@@ -1,13 +1,15 @@
 mod headers;
 mod config;
+mod authorized_data;
 
 #[macro_use] extern crate rocket;
 
+use crate::authorized_data::AuthorizedRequest;
 use crate::config::Config;
 
-#[post("/api/interactions")]
-fn api_interactions() -> &'static str {
-    "{\"type\":1}"
+#[post("/api/interactions", format= "application/json", data = "<message>")]
+fn api_interactions(message: AuthorizedRequest) -> Result<&'static str, ()> {
+    Ok("{\"type\":1}")
 }
 
 #[get("/")]
